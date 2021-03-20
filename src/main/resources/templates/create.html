@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::head">
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+</head>
+<body>
+
+<h1 align="center" th:text="${product.date_time}?'Update product':'Add a new Product'"></h1>
+
+<form method="post" class="row g-3">
+    <table th:object="${product}" class="table">
+        <tr>
+            <td>Name</td>
+            <td><input th:field="*{name}" class="form-control" ></td>
+            <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Errors</td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td><input th:field="*{price}" class="form-control" ></td>
+            <td th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><input th:field="*{description}" class="form-control" ></td>
+            <td th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></td>
+        </tr>
+        <tr>
+            <td>Quantity</td>
+            <td><input th:field="*{quantity}" class="form-control"  ></td>
+            <td th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></td>
+        </tr>
+        <tr>
+            <td>Category</td>
+            <td>
+                <select th:field="*{category}" class="form-select" >
+                    <option th:each="p : ${categoryList}" th:value="${p.id}" th:text="${p.name}"></option>
+                </select>
+            </td>
+        </tr>
+
+    </table>
+    <button type="submit" style="width: 300px">Submit</button>
+</form>
+</body>
+</html>

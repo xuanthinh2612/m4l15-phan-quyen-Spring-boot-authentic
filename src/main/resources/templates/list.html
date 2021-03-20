@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::head">
+
+    <meta charset="UTF-8">
+    <title>List customer</title>
+
+</head>
+<body>
+<h1 align="center">Product Manager</h1>
+
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="/list">Back To List</a>
+    <a href="/create">Add new Product</a>
+    <a href="/get5Latest">get 5 latest products</a>
+    <a href="/getTop5expensive">get 5 the most expensive products</a>
+    <a href="/getTotalMoneyRemainInWareHouse">check money</a>
+</div>
+
+
+<div id="main">
+    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Menu</span>
+    <table class="table table-striped" width="50">
+        <tr>
+            <form method="post" action="/findByName">
+                <td><input name="name"></td>
+                <td>
+                    <button type="submit">Search By Name</button>
+                </td>
+            </form>
+            <form action="/findByCategory" method="post" th:object="${category}">
+                <td>
+                    <select th:field="*{id}">
+                        <option th:each="c : ${categoryList}" th:value="${c.id}" th:text="${c.name}"></option>
+                    </select>
+                </td>
+                <td>
+                    <button type="submit">Find by category</button>
+                </td>
+            </form>
+        </tr>
+    </table>
+
+
+    <table class="table table-striped">
+        <tr>
+            <td>Name</td>
+            <td>Price</td>
+            <td>Description</td>
+            <td>Quantity</td>
+            <td>Date</td>
+            <td>Category</td>
+            <td>Update</td>
+            <td>Delete</td>
+        </tr>
+        <!--    <tr><h3  th:if="${productList}" >Nothing matched</h3>-->
+        </tr>
+        <tr th:each=" c: ${productList}">
+            <td th:text="${c.name}"></td>
+            <td th:text="${c.price}"></td>
+            <td th:text="${c.description}"></td>
+            <td th:text="${c.quantity}"></td>
+            <td th:text="${c.date_time}"></td>
+            <td th:text="${c.category.name}"></td>
+            <td><a th:href="@{/update/{id}(id=${c.id})}">Update</a></td>
+            <td><a th:href="@{/delete/{id}(id=${c.id})}">Delete</a></td>
+        </tr>
+    </table>
+</div>
+<!--    //phan trang-->
+<div>
+    <a th:href="@{'/list'(page=${productList.number - 1})}" th:if="${productList.hasPrevious()}">Previous</a>
+    <span th:text="${productList.number + 1}"></span>/<span th:text="${productList.totalPages}"></span>
+    <a th:href="@{'/list'(page=${productList.number + 1})}" th:if="${productList.hasNext()}">Next</a>
+</div>
+
+<style>
+    body {
+        font-family: "Lato", sans-serif;
+        transition: background-color .5s;
+    }
+
+    .sidenav {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: #111;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
+
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
+    }
+
+    #main {
+        transition: margin-left .5s;
+        padding: 16px;
+    }
+
+    @media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+        .sidenav a {font-size: 18px;}
+    }
+</style>
+<script>
+    function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("main").style.marginLeft = "250px";
+        document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+    }
+
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft= "0";
+        document.body.style.backgroundColor = "white";
+    }
+</script>
+
+</body>
+</html>
